@@ -1,3 +1,12 @@
+### DegGixM 
+DegGixM Desdeki'ile RoseRobot GitHub.com -da Klonlanib Sunulur!
+DegGixM Resmi Kanal'i Etrafli Melumat Ucun Resmi Kanali Bax.[DegGixM](https://t.me/DegGixM)
+DegGixM Owner. [MUCVE](https;//t.me/MUCVE_M) 
+
+<img src="https://te.legra.ph/file/50771de1bcd2e67af5ae4.jpg" width="550" height="450">
+</p>
+
+
 # tgbot
 Sqlalchemy verilənlər bazası ilə python3-də işləyən modul teleqram Python botu.
 
@@ -94,3 +103,8 @@ Aşağıdakı env dəyişənləri dəstəklənir:
  - `STRICT_GBAN`: Köhnə qruplar kimi yeni qruplarda da gbans tətbiq edin. Qadağan edilmiş istifadəçi danışanda ona qadağa qoyulacaq.
  - `İŞLƏR`: İstifadə ediləcək mövzuların sayı. 8 tövsiyə olunan (və defolt) məbləğdir, lakin təcrübəniz fərqli ola bilər.
  __Qeyd edək ki, daha çox mövzu ilə çılğınlıq botunuzu sürətləndirməyəcək.
+
+## 🚀 Heroku Deployment
+
+<h4>RoseRobot-ni Heroku-da yerləşdirmək üçün aşağıdakı düyməni basın!</h4>    
+<a href="https://heroku.com/deploy/"><img src="https://img.shields.io/badge/Deploy%20To%20Heroku-blueviolet?style=https://github.com/DegGixM/RoseRobot=heroku" width="200""/></a>
