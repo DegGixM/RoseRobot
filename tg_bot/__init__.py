@@ -4,16 +4,16 @@ import sys
 
 import telegram.ext as tg
 
-# enable logging
+# girişi aktivləşdirin
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO)
 
 LOGGER = logging.getLogger(__name__)
 
-# if version < 3.6, stop bot.
+# versiya <3.6 olarsa, botu dayandırın.
 if sys.version_info[0] < 3 or sys.version_info[1] < 6:
-    LOGGER.error("You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting.")
+    LOGGER.error("Ən azı 3.6 python versiyasına sahib olmalısınız! Bir çox xüsusiyyətlər bundan asılıdır. Bot tərk edir.")
     quit(1)
 
 ENV = bool(os.environ.get('ENV', False))
@@ -23,7 +23,7 @@ if ENV:
     try:
         OWNER_ID = int(os.environ.get('OWNER_ID', None))
     except ValueError:
-        raise Exception("Your OWNER_ID env variable is not a valid integer.")
+        raise Exception("OWNER_ID env dəyişəniniz etibarlı tam ədəd deyil.")
 
     MESSAGE_DUMP = os.environ.get('MESSAGE_DUMP', None)
     OWNER_USERNAME = os.environ.get("OWNER_USERNAME", None)
@@ -31,17 +31,17 @@ if ENV:
     try:
         SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
     except ValueError:
-        raise Exception("Your sudo users list does not contain valid integers.")
+        raise Exception("Sudo istifadəçilər siyahısında etibarlı tam ədədlər yoxdur.")
 
     try:
         SUPPORT_USERS = set(int(x) for x in os.environ.get("SUPPORT_USERS", "").split())
     except ValueError:
-        raise Exception("Your support users list does not contain valid integers.")
+        raise Exception("Dəstək istifadəçiləri siyahısında etibarlı tam ədədlər yoxdur.")
 
     try:
         WHITELIST_USERS = set(int(x) for x in os.environ.get("WHITELIST_USERS", "").split())
     except ValueError:
-        raise Exception("Your whitelisted users list does not contain valid integers.")
+        raise Exception("Ağ siyahıya salınmış istifadəçilər siyahısında etibarlı tam ədədlər yoxdur.")
 
     WEBHOOK = bool(os.environ.get('WEBHOOK', False))
     URL = os.environ.get('URL', "")  # Does not contain token
@@ -64,7 +64,7 @@ else:
     try:
         OWNER_ID = int(Config.OWNER_ID)
     except ValueError:
-        raise Exception("Your OWNER_ID variable is not a valid integer.")
+        raise Exception("OWNER_ID dəyişəniniz etibarlı tam ədəd deyil.")
 
     MESSAGE_DUMP = Config.MESSAGE_DUMP
     OWNER_USERNAME = Config.OWNER_USERNAME
@@ -72,17 +72,16 @@ else:
     try:
         SUDO_USERS = set(int(x) for x in Config.SUDO_USERS or [])
     except ValueError:
-        raise Exception("Your sudo users list does not contain valid integers.")
-
+        raise Exception("Sudo istifadəçilər siyahısında etibarlı tam ədədlər yoxdur.")
     try:
         SUPPORT_USERS = set(int(x) for x in Config.SUPPORT_USERS or [])
     except ValueError:
-        raise Exception("Your support users list does not contain valid integers.")
+        raise Exception("Dəstək istifadəçiləri siyahısında etibarlı tam ədədlər yoxdur.")
 
     try:
         WHITELIST_USERS = set(int(x) for x in Config.WHITELIST_USERS or [])
     except ValueError:
-        raise Exception("Your whitelisted users list does not contain valid integers.")
+        raise Exception("Ağ siyahıya salınmış istifadəçilər siyahısında etibarlı tam ədədlər yoxdur.")
 
     WEBHOOK = Config.WEBHOOK
     URL = Config.URL
@@ -111,10 +110,10 @@ SUDO_USERS = list(SUDO_USERS)
 WHITELIST_USERS = list(WHITELIST_USERS)
 SUPPORT_USERS = list(SUPPORT_USERS)
 
-# Load at end to ensure all prev variables have been set
+# Bütün əvvəlki dəyişənlərin təyin olunduğundan əmin olmaq üçün sonunda yükləyin
 from tg_bot.modules.helper_funcs.handlers import CustomCommandHandler, CustomRegexHandler
 
-# make sure the regex handler can take extra kwargs
+# əmin olun ki, regex işləyicisi əlavə kvarqlar ala bilər
 tg.RegexHandler = CustomRegexHandler
 
 if ALLOW_EXCL:
