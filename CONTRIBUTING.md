@@ -1,27 +1,27 @@
-# Contributing
+#Töhfə
 
-Contributions are very welcome! Here are some guidelines on how the project is designed.
+Töhfələr çox xoşdur! Burada layihənin necə tərtib olunduğuna dair bəzi təlimatlar verilmişdir.
 
 ### CodeStyle
 
-- Adhere to PEP8 as much as possible.
+- PEP8-ə mümkün qədər riayət edin.
 
-- Line lengths should be under 120 characters, use list comprehensions over map/filter, don't leave trailing whitespace.
+- Sətir uzunluqları 120 simvoldan az olmalıdır, xəritə/filtr üzərində siyahı anlayışlarından istifadə edin, arxada boşluq buraxmayın.
 
-- More complex pieces of code should be commented for future reference.
+- Gələcək istinad üçün daha mürəkkəb kod parçaları şərh edilməlidir.
 
-### Structure
+### Struktur
 
-There are a few self-imposed rules on the project structure, to keep the project as tidy as possible.
-- All modules should go into the `modules/` directory.
-- Any database accesses should be done in `modules/sql/` - no instances of SESSION should be imported anywhere else.
-- Make sure your database sessions are properly scoped! Always close them properly.
-- When creating a new module, there should be as few changes to other files as possible required to incorporate it.
-Removing the module file should result in a bot which is still in perfect working condition.
-- If a module is dependent on multiple other files, which might not be loaded, then create a list of at module
-load time, in `__main__`, by looking at attributes. This is how migration, /help, /stats, /info, and many other things
-are based off of. It allows the bot to work fine with the LOAD and NO_LOAD configurations.
-- Keep in mind that some things might clash; eg a regex handler could clash with a command handler - in this case, you 
-should put them in different dispatcher groups.
+Layihəni mümkün qədər səliqəli saxlamaq üçün layihə strukturunda bir neçə öz-özünə qoyulan qaydalar var.
+- Bütün modullar `modules/` kataloquna daxil olmalıdır.
+- İstənilən verilənlər bazasına giriş `modullar/sql/` proqramında aparılmalıdır - SESSION-un heç bir nümunəsi başqa yerə idxal edilməməlidir.
+- Verilənlər bazası seanslarınızın düzgün əhatə olunduğundan əmin olun! Həmişə onları düzgün şəkildə bağlayın.
+- Yeni modul yaratarkən, onu daxil etmək üçün digər fayllara mümkün qədər az dəyişiklik edilməlidir.
+Modul faylının silinməsi hələ də mükəmməl işlək vəziyyətdə olan bir botla nəticələnməlidir.
+- Əgər modul bir neçə başqa fayldan asılıdırsa, onlar yüklənməyə bilər, onda modulun siyahısını yaradın.
+atributlara baxaraq, `__main__` daxilində yükləmə vaxtı. Miqrasiya, /help, /stats, /info və bir çox başqa şeylər belədir
+əsasında qurulur. O, botun LOAD və NO_LOAD konfiqurasiyaları ilə yaxşı işləməsinə imkan verir.
+- Nəzərə alın ki, bəzi şeylər toqquşa bilər; məsələn, bir regex işləyicisi komanda işləyicisi ilə toqquşa bilər - bu halda, siz
+onları müxtəlif dispetçer qruplarına yerləşdirməlidir.
 
-Might seem complicated, but it'll make sense when you get into it. Feel free to ask me for a hand/advice!
+Mürəkkəb görünə bilər, amma içəri girəndə mənalı olacaq. Məndən əl/məsləhət istəməkdən çekinmeyin!
