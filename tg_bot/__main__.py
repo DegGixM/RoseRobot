@@ -12,50 +12,49 @@ from telegram.utils.helpers import escape_markdown
 
 from tg_bot import dispatcher, updater, TOKEN, WEBHOOK, OWNER_ID, DONATION_LINK, CERT_PATH, PORT, URL, LOGGER, \
     ALLOW_EXCL
-# needed to dynamically load modules
-# NOTE: Module order is not guaranteed, specify that in the config file!
+#modulları dinamik yükləmək üçün lazımdır
+# QEYD: Modul sırasına zəmanət verilmir, bunu konfiqurasiya faylında qeyd edin!
 from tg_bot.modules import ALL_MODULES
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Hi {}, my name is {}! If you have any questions on how to use me, read /help - and then head to @MarieSupport.
+Salam mənim adım {}! Məndən necə istifadə edəcəyinizlə bağlı hər hansı sualınız varsa, /help - oxuyun və sonra @MarieSupport səhifəsinə keçin.
 
-I'm a group manager bot built in python3, using the python-telegram-bot library, and am fully opensource; \
-you can find what makes me tick [here](github.com/PaulSonOfLars/tgbot)!
+Mən python-telegram-bot kitabxanasından istifadə edərək python3-də qurulmuş qrup meneceri botuyam və tam açıq mənbəyəm; \
+məni işarələyən şeyləri tapa bilərsiniz [burada](https://github.com/DegGixM/RoseRobot)!
 
-Feel free to submit pull requests on github, or to contact my support group, @MarieSupport, with any bugs, questions \
-or feature requests you might have :)
-I also have a news channel, @MarieNews for announcements on new features, downtime, etc.
+Hər hansı bir səhv, sualınız ilə github-da sorğu göndərməkdən və ya dəstək qrupum @DegGixM ilə əlaqə saxlamaqdan çekinmeyin \
+və ya xüsusiyyət sorğularınız ola bilər :)
+Yeni funksiyalar, dayanmalar və s. haqqında elanlar üçün @MarieNews adlı xəbər kanalım da var.
 
-You can find the list of available commands with /help.
+Mövcud əmrlərin siyahısını /help ilə tapa bilərsiniz.
 
-If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
+Əgər məndən istifadə etməkdən həzz alırsansa və/yaxud mənə vəhşi təbiətdə sağ qalmağıma kömək etmək istəyirsənsə, VPS-i maliyyələşdirməyə/təkmilləşdirməyə kömək etmək üçün / bağış et!
 """
-
 HELP_STRINGS = """
-Hey there! My name is *{}*.
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of \
-the things I can help you with.
+Salam! Mənim adım *{}*.
+Mən bir neçə əyləncəli əlavələri olan modul qrup idarəetmə botuyam! Bəziləri haqqında fikir əldə etmək üçün aşağıdakılara nəzər salın.
+sizə kömək edə biləcəyim şeylər.
 
-*Main* commands available:
- - /start: start the bot
- - /help: PM's you this message.
- - /help <module name>: PM's you info about that module.
- - /donate: information about how to donate!
- - /settings:
-   - in PM: will send you your settings for all supported modules.
-   - in a group: will redirect you to pm, with all that chat's settings.
+*Əsas* əmrlər mövcuddur:
+  - /start: botu işə salın
+  - / help: PM sizə bu mesajdır.
+  - /help <modul adı>: PM sizə həmin modul haqqında məlumatdır.
+  - /donate: ianə vermək haqqında məlumat!
+  - /parametrlər:
+    - PM-də: bütün dəstəklənən modullar üçün parametrlərinizi sizə göndərəcək.
+    - qrupda: bütün söhbət parametrləri ilə sizi pm-ə yönləndirəcək.
 
 {}
-And the following:
-""".format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
+Və aşağıdakılar:
+""".format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nBütün əmrlər ya ilə istifadə edilə bilər / or !.\n")
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
-It took lots of work for my creator to get me to where I am now, and every donation helps \
-motivate him to make me even better. All the donation money will go to a better VPS to host me, and/or beer \
-(see his bio!). He's just a poor student, so every little helps!
-There are two ways of paying him; [PayPal](paypal.me/PaulSonOfLars), or [Monzo](monzo.me/paulnionvestergaardlarsen)."""
+DONATE_STRING = """Hey, ianə vermək istədiyinizi eşitdiyimə şadam!
+Məni indi olduğum yerə çatdırmaq üçün yaradıcım çox zəhmət çəkdi və hər bir ianə kömək edir \
+məni daha da yaxşılaşdırmaq üçün onu motivasiya et. Bütün ianə pulları məni qəbul etmək üçün daha yaxşı VPS-ə və/yaxud pivəyə gedəcək.
+(onun tərcümeyi-halına baxın!). O, sadəcə kasıb tələbədir, ona görə də hər kiçik kömək edir!
+Ona ödəməyin iki yolu var; [DegGixM GitHub](https://github.com/DegGixM/RoseRobot) və ya [DegGixM](https://t.me/DegGixM)."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -78,12 +77,12 @@ for module_name in ALL_MODULES:
     if not imported_module.__mod_name__.lower() in IMPORTED:
         IMPORTED[imported_module.__mod_name__.lower()] = imported_module
     else:
-        raise Exception("Can't have two modules with the same name! Please change one")
+        raise Exception("Eyni ada malik iki modul ola bilməz! Zəhmət olmasa birini dəyişdirin")
 
     if hasattr(imported_module, "__help__") and imported_module.__help__:
         HELPABLE[imported_module.__mod_name__.lower()] = imported_module
 
-    # Chats to migrate on chat_migrated events
+    # chat_migrated hadisələrdə köçmək üçün söhbətlər
     if hasattr(imported_module, "__migrate__"):
         MIGRATEABLE.append(imported_module)
 
@@ -121,11 +120,10 @@ def send_help(chat_id, text, keyboard=None):
 
 @run_async
 def test(bot: Bot, update: Update):
-    # pprint(eval(str(update)))
-    # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
-    update.effective_message.reply_text("This person edited a message")
+    # pprint(qiymətləndirmə(str(yeniləmə)))
+     # update.effective_message.reply_text("Yaxşı tester! _Məndə* `markdown` var", parse_mode=ParseMode.MARKDOWN)
+    update.effective_message.reply_text("Bu şəxs mesajı redaktə etdi")
     print(update.effective_message)
-
 
 @run_async
 def start(bot: Bot, update: Update, args: List[str]):
@@ -152,37 +150,36 @@ def start(bot: Bot, update: Update, args: List[str]):
                 PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
                 parse_mode=ParseMode.MARKDOWN)
     else:
-        update.effective_message.reply_text("Yo, whadup?")
+        update.effective_message.reply_text("Hə, necəsən?")
 
 
-# for test purposes
+# test məqsədləri üçün
 def error_callback(bot, update, error):
     try:
         raise error
     except Unauthorized:
         print("no nono1")
         print(error)
-        # remove update.message.chat_id from conversation list
+        # update.message.chat_id-i söhbət siyahısından silin
     except BadRequest:
         print("no nono2")
         print("BadRequest caught")
         print(error)
 
-        # handle malformed requests - read more below!
+        # qüsurlu sorğuları idarə edin - aşağıda daha ətraflı oxuyun!
     except TimedOut:
         print("no nono3")
-        # handle slow connection problems
+        # yavaş əlaqə problemlərini həll edin
     except NetworkError:
         print("no nono4")
-        # handle other connection problems
+        # digər əlaqə problemlərini həll edin
     except ChatMigrated as err:
         print("no nono5")
         print(err)
-        # the chat_id of a group has changed, use e.new_chat_id instead
+        # qrupun chat_id-i dəyişdi, əvəzinə e.new_chat_id istifadə edin
     except TelegramError:
         print(error)
-        # handle all other telegram related errors
-
+        # bütün digər teleqramla əlaqəli səhvləri idarə edin
 
 @run_async
 def help_button(bot: Bot, update: Update):
@@ -194,7 +191,7 @@ def help_button(bot: Bot, update: Update):
     try:
         if mod_match:
             module = mod_match.group(1)
-            text = "Here is the help for the *{}* module:\n".format(HELPABLE[module].__mod_name__) \
+            text = "Budur *{}* modulu üçün yardım:\n".format(HELPABLE[module].__mod_name__) \
                    + HELPABLE[module].__help__
             query.message.reply_text(text=text,
                                      parse_mode=ParseMode.MARKDOWN,
@@ -220,18 +217,18 @@ def help_button(bot: Bot, update: Update):
                                      parse_mode=ParseMode.MARKDOWN,
                                      reply_markup=InlineKeyboardMarkup(paginate_modules(0, HELPABLE, "help")))
 
-        # ensure no spinny white circle
+        # fırlanan ağ dairənin olmamasına əmin olun
         bot.answer_callback_query(query.id)
         query.message.delete()
     except BadRequest as excp:
-        if excp.message == "Message is not modified":
+        if excp.message == "Mesaj dəyişdirilməyib":
             pass
-        elif excp.message == "Query_id_invalid":
+        elif excp.message == "Sorğunun id-si etibarsızdır":
             pass
-        elif excp.message == "Message can't be deleted":
+        elif excp.message == "Mesaj silinə bilməz":
             pass
         else:
-            LOGGER.exception("Exception in help buttons. %s", str(query.data))
+            LOGGER.exception("Kömək düymələrində istisna":. %s", str(query.data))
 
 
 @run_async
@@ -242,7 +239,7 @@ def get_help(bot: Bot, update: Update):
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
 
-        update.effective_message.reply_text("Contact me in PM to get the list of possible commands.",
+        update.effective_message.reply_text("Mümkün əmrlərin siyahısını əldə etmək üçün mənimlə PM-də əlaqə saxlayın.",
                                             reply_markup=InlineKeyboardMarkup(
                                                 [[InlineKeyboardButton(text="Help",
                                                                        url="t.me/{}?start=help".format(
@@ -251,7 +248,7 @@ def get_help(bot: Bot, update: Update):
 
     elif len(args) >= 2 and any(args[1].lower() == x for x in HELPABLE):
         module = args[1].lower()
-        text = "Here is the available help for the *{}* module:\n".format(HELPABLE[module].__mod_name__) \
+        text = "üçün mövcud yardım budur *{}* module:\n".format(HELPABLE[module].__mod_name__) \
                + HELPABLE[module].__help__
         send_help(chat.id, text, InlineKeyboardMarkup([[InlineKeyboardButton(text="Back", callback_data="help_back")]]))
 
@@ -264,24 +261,24 @@ def send_settings(chat_id, user_id, user=False):
         if USER_SETTINGS:
             settings = "\n\n".join(
                 "*{}*:\n{}".format(mod.__mod_name__, mod.__user_settings__(user_id)) for mod in USER_SETTINGS.values())
-            dispatcher.bot.send_message(user_id, "These are your current settings:" + "\n\n" + settings,
+            dispatcher.bot.send_message(user_id, "Bunlar cari parametrlərinizdir:" + "\n\n" + settings,
                                         parse_mode=ParseMode.MARKDOWN)
 
         else:
-            dispatcher.bot.send_message(user_id, "Seems like there aren't any user specific settings available :'(",
+            dispatcher.bot.send_message(user_id, "Görünür, hər hansı bir istifadəçi üçün xüsusi parametrlər mövcud deyil :'(",
                                         parse_mode=ParseMode.MARKDOWN)
 
     else:
         if CHAT_SETTINGS:
             chat_name = dispatcher.bot.getChat(chat_id).title
             dispatcher.bot.send_message(user_id,
-                                        text="Which module would you like to check {}'s settings for?".format(
+                                        text="Hansı modulu yoxlamaq istərdiniz {}'s settings for?".format(
                                             chat_name),
                                         reply_markup=InlineKeyboardMarkup(
                                             paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)))
         else:
-            dispatcher.bot.send_message(user_id, "Seems like there aren't any chat settings available :'(\nSend this "
-                                                 "in a group chat you're admin in to find its current settings!",
+            dispatcher.bot.send_message(user_id, "Deyəsən, heç bir söhbət parametri mövcud deyil :'(\nBunu göndər"
+                                                  "qrup söhbətində onun cari parametrlərini tapmaq üçün adminsiniz!",
                                         parse_mode=ParseMode.MARKDOWN)
 
 
@@ -298,7 +295,7 @@ def settings_button(bot: Bot, update: Update):
             chat_id = mod_match.group(1)
             module = mod_match.group(2)
             chat = bot.get_chat(chat_id)
-            text = "*{}* has the following settings for the *{}* module:\n\n".format(escape_markdown(chat.title),
+            text = "*{}* üçün aşağıdakı parametrlərə malikdir *{}* module:\n\n".format(escape_markdown(chat.title),
                                                                                      CHAT_SETTINGS[
                                                                                          module].__mod_name__) + \
                    CHAT_SETTINGS[module].__chat_settings__(chat_id, user.id)
@@ -312,8 +309,8 @@ def settings_button(bot: Bot, update: Update):
             chat_id = prev_match.group(1)
             curr_page = int(prev_match.group(2))
             chat = bot.get_chat(chat_id)
-            query.message.reply_text("Hi there! There are quite a few settings for {} - go ahead and pick what "
-                                     "you're interested in.".format(chat.title),
+            query.message.reply_text("salam! üçün kifayət qədər bir neçə parametr var {} - gedin və nəyi seçin "
+                                     "maraqlanırsınız.".format(chat.title),
                                      reply_markup=InlineKeyboardMarkup(
                                          paginate_modules(curr_page - 1, CHAT_SETTINGS, "stngs",
                                                           chat=chat_id)))
@@ -322,8 +319,8 @@ def settings_button(bot: Bot, update: Update):
             chat_id = next_match.group(1)
             next_page = int(next_match.group(2))
             chat = bot.get_chat(chat_id)
-            query.message.reply_text("Hi there! There are quite a few settings for {} - go ahead and pick what "
-                                     "you're interested in.".format(chat.title),
+                   query.message.reply_text("salam! üçün kifayət qədər bir neçə parametr var {} - gedin və nəyi seçin "
+                                     "maraqlanırsınız.".format(chat.title),
                                      reply_markup=InlineKeyboardMarkup(
                                          paginate_modules(next_page + 1, CHAT_SETTINGS, "stngs",
                                                           chat=chat_id)))
@@ -331,8 +328,8 @@ def settings_button(bot: Bot, update: Update):
         elif back_match:
             chat_id = back_match.group(1)
             chat = bot.get_chat(chat_id)
-            query.message.reply_text(text="Hi there! There are quite a few settings for {} - go ahead and pick what "
-                                          "you're interested in.".format(escape_markdown(chat.title)),
+            query.message.reply_text(text="salam! üçün kifayət qədər bir neçə parametr var {} - gedin və nəyi seçin "
+                                          "maraqlanırsınız.".format(escape_markdown(chat.title)),
                                      parse_mode=ParseMode.MARKDOWN,
                                      reply_markup=InlineKeyboardMarkup(paginate_modules(0, CHAT_SETTINGS, "stngs",
                                                                                         chat=chat_id)))
@@ -341,14 +338,14 @@ def settings_button(bot: Bot, update: Update):
         bot.answer_callback_query(query.id)
         query.message.delete()
     except BadRequest as excp:
-        if excp.message == "Message is not modified":
+        if excp.message == "Mesaj dəyişdirilməyib":
             pass
-        elif excp.message == "Query_id_invalid":
+        elif excp.message == "Sorğu id-si etibarsızdır":
             pass
-        elif excp.message == "Message can't be deleted":
+        elif excp.message == "Mesaj silinə bilməz":
             pass
         else:
-            LOGGER.exception("Exception in settings buttons. %s", str(query.data))
+            LOGGER.exception("Parametrlər düymələrində istisna. %s", str(query.data))
 
 
 @run_async
@@ -361,14 +358,14 @@ def get_settings(bot: Bot, update: Update):
     # ONLY send settings in PM
     if chat.type != chat.PRIVATE:
         if is_user_admin(chat, user.id):
-            text = "Click here to get this chat's settings, as well as yours."
+            text = "Bu söhbətin, eləcə də sizin ayarlarınızı əldə etmək üçün bura klikləyin."
             msg.reply_text(text,
                            reply_markup=InlineKeyboardMarkup(
                                [[InlineKeyboardButton(text="Settings",
                                                       url="t.me/{}?start=stngs_{}".format(
                                                           bot.username, chat.id))]]))
         else:
-            text = "Click here to check your settings."
+            text = "Parametrlərinizi yoxlamaq üçün bura klikləyin."
 
     else:
         send_settings(chat.id, user.id, True)
@@ -383,7 +380,7 @@ def donate(bot: Bot, update: Update):
         update.effective_message.reply_text(DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
 
         if OWNER_ID != 254318997 and DONATION_LINK:
-            update.effective_message.reply_text("You can also donate to the person currently running me "
+            update.effective_message.reply_text("Hazırda məni idarə edən şəxsə də ianə verə bilərsiniz "
                                                 "[here]({})".format(DONATION_LINK),
                                                 parse_mode=ParseMode.MARKDOWN)
 
@@ -391,13 +388,13 @@ def donate(bot: Bot, update: Update):
         try:
             bot.send_message(user.id, DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
 
-            update.effective_message.reply_text("I've PM'ed you about donating to my creator!")
+            update.effective_message.reply_text("Yaradanıma ianə verməklə bağlı sizə PM göndərdim!")
         except Unauthorized:
-            update.effective_message.reply_text("Contact me in PM first to get donation information.")
+            update.effective_message.reply_text("İanə haqqında məlumat almaq üçün əvvəlcə mənimlə əlaqə saxlayın.")
 
 
 def migrate_chats(bot: Bot, update: Update):
-    msg = update.effective_message  # type: Optional[Message]
+    msg = update.effective_message  # Növ: Könüllü[Mesaj]
     if msg.migrate_to_chat_id:
         old_chat = update.effective_chat.id
         new_chat = msg.migrate_to_chat_id
@@ -407,11 +404,11 @@ def migrate_chats(bot: Bot, update: Update):
     else:
         return
 
-    LOGGER.info("Migrating from %s, to %s", str(old_chat), str(new_chat))
+    LOGGER.info("dən köçür %s, to %s", str(old_chat), str(new_chat))
     for mod in MIGRATEABLE:
         mod.__migrate__(old_chat, new_chat)
 
-    LOGGER.info("Successfully migrated!")
+    LOGGER.info("Uğurla köçdü!")
     raise DispatcherHandlerStop
 
 
@@ -428,7 +425,7 @@ def main():
     donate_handler = CommandHandler("donate", donate)
     migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats)
 
-    # dispatcher.add_handler(test_handler)
+    # dispatcher.add işləyicisi (test işləyicisi)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
     dispatcher.add_handler(settings_handler)
@@ -436,14 +433,15 @@ def main():
     dispatcher.add_handler(settings_callback_handler)
     dispatcher.add_handler(migrate_handler)
     dispatcher.add_handler(donate_handler)
+                             
+# dispatcher.add səhv idarəedicisi (xəta geri çağırış)
 
-    # dispatcher.add_error_handler(error_callback)
-
-    # add antiflood processor
+     # daşqın əleyhinə prosessor əlavə edin
+                             
     Dispatcher.process_update = process_update
 
     if WEBHOOK:
-        LOGGER.info("Using webhooks.")
+        LOGGER.info("Veb kancalardan istifadə.")
         updater.start_webhook(listen="127.0.0.1",
                               port=PORT,
                               url_path=TOKEN)
@@ -455,7 +453,7 @@ def main():
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        LOGGER.info("Using long polling.")
+        LOGGER.info("Uzun sorğudan istifadə.")
         updater.start_polling(timeout=15, read_latency=4)
 
     updater.idle()
@@ -466,12 +464,12 @@ CHATS_TIME = {}
 
 
 def process_update(self, update):
-    # An error happened while polling
+    # Səsvermə zamanı xəta baş verdi
     if isinstance(update, TelegramError):
         try:
             self.dispatch_error(None, update)
         except Exception:
-            self.logger.exception('An uncaught error was raised while handling the error')
+            self.logger.exception('Səhv işlənərkən tutulmamış xəta yarandı')
         return
 
     now = datetime.datetime.utcnow()
@@ -494,28 +492,28 @@ def process_update(self, update):
                 handler.handle_update(update, self)
                 break
 
-        # Stop processing with any other handler.
+        # Hər hansı digər işləyici ilə işləməyi dayandırın.
         except DispatcherHandlerStop:
-            self.logger.debug('Stopping further handlers due to DispatcherHandlerStop')
+            self.logger.debug('Dispetçer İşləyicisinin Dayanmasına görə əlavə işləyicilərin dayandırılması')
             break
 
-        # Dispatch any error.
+       # Hər hansı bir səhv göndərin.
         except TelegramError as te:
-            self.logger.warning('A TelegramError was raised while processing the Update')
+            self.logger.warning('Yeniləmə işlənərkən Telegram xətası yarandı')
 
             try:
                 self.dispatch_error(update, te)
             except DispatcherHandlerStop:
-                self.logger.debug('Error handler stopped further handlers')
+                self.logger.debug('Xəta idarəedicisi əlavə işləyiciləri dayandırdı')
                 break
             except Exception:
-                self.logger.exception('An uncaught error was raised while handling the error')
+                self.logger.exception('Səhv işlənərkən tutulmamış xəta qaldırıldı')
 
-        # Errors should not stop the thread.
+        # Səhvlər mövzunu dayandırmamalıdır.
         except Exception:
-            self.logger.exception('An uncaught error was raised while processing the update')
+            self.logger.exception('Yeniləmə işlənərkən tutulmamış xəta yarandı')
 
 
 if __name__ == '__main__':
-    LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
+    LOGGER.info("Modullar uğurla yükləndi: " + str(ALL_MODULES))
     main()
