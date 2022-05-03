@@ -1,41 +1,41 @@
 if not __name__.endswith("sample_config"):
     import sys
-    print("The README is there to be read. Extend this sample config to a config file, don't just rename and change "
-          "values here. Doing that WILL backfire on you.\nBot quitting.", file=sys.stderr)
+    print("README oxumaq üçün oradadır. Bu nümunə konfiqurasiyanı konfiqurasiya faylına genişləndirin, sadəcə adını dəyişməyin və dəyişdirin "
+           "burada dəyərlər var. Bunu etmək sizə əks nəticə verəcəkdir.\nBot tərk edir.", file=sys.stderr)
     quit(1)
 
 
-# Create a new config.py file in same dir and import, then extend this class.
+# Eyni dir və idxalda yeni config.py faylı yaradın, sonra bu sinfi genişləndirin.
 class Config(object):
     LOGGER = True
 
-    # REQUIRED
+    # TƏLƏB OLUNUR
     API_KEY = "YOUR KEY HERE"
-    OWNER_ID = "YOUR ID HERE"  # If you dont know, run the bot and do /id in your private chat with it
+    OWNER_ID = "YOUR ID HERE"  # Əgər bilmirsinizsə, botu işə salın və onunla şəxsi söhbətinizdə /id edin
     OWNER_USERNAME = "YOUR USERNAME HERE"
 
     # RECOMMENDED
-    SQLALCHEMY_DATABASE_URI = 'sqldbtype://username:pw@hostname:port/db_name'  # needed for any database modules
-    MESSAGE_DUMP = None  # needed to make sure 'save from' messages persist
+    SQLALCHEMY_DATABASE_URI = 'sqldbtype://username:pw@hostname:port/db_name'  # istənilən verilənlər bazası modulları üçün lazımdır
+    MESSAGE_DUMP = None  # "saxla" mesajlarının davam etdiyinə əmin olmaq lazımdır
     LOAD = []
-    # sed has been disabled after the discovery that certain long-running sed commands maxed out cpu usage
-    # and killed the bot. Be careful re-enabling it!
+    #Bəzi uzun müddət işləyən sed əmrlərinin cpu istifadəsini maksimuma çatdırdığı aşkar edildikdən sonra sed aradan qaldırıldı
+     # və botu öldürdü. Onu yenidən aktivləşdirərkən diqqətli olun!
     NO_LOAD = ['translation', 'rss', 'sed']
     WEBHOOK = False
     URL = None
 
     # OPTIONAL
-    SUDO_USERS = []  # List of id's (not usernames) for users which have sudo access to the bot.
-    SUPPORT_USERS = []  # List of id's (not usernames) for users which are allowed to gban, but can also be banned.
-    WHITELIST_USERS = []  # List of id's (not usernames) for users which WONT be banned/kicked by the bot.
-    DONATION_LINK = None  # EG, paypal
-    CERT_PATH = None
+    SUDO_USERS = []  # Bota sudo girişi olan istifadəçilər üçün id-lərin (istifadəçi adlarının deyil) siyahısı.
+     SUPPORT_USERS = [] # Gban-a icazə verilən, lakin qadağan edilə bilən istifadəçilər üçün id-lərin (istifadəçi adlarının deyil) siyahısı.
+     WHITELIST_USERS = [] # Bot tərəfindən qadağan edilməyən/qovulmayan istifadəçilər üçün id-lərin (istifadəçi adlarının deyil) siyahısı.
+     DONATION_LINK = None # EG, paypal
+     CERT_PATH = None
     PORT = 5000
-    DEL_CMDS = False  # Whether or not you should delete "blue text must click" commands
+    DEL_CMDS = False  # "Mavi mətn klikləməlidir" əmrlərini silməyiniz lazım olub-olmaması
     STRICT_GBAN = False
-    WORKERS = 8  # Number of subthreads to use. This is the recommended amount - see for yourself what works best!
-    BAN_STICKER = 'CAADAgADOwADPPEcAXkko5EB3YGYAg'  # banhammer marie sticker
-    ALLOW_EXCL = False  # Allow ! commands as well as /
+    WORKERS = 8  # İstifadə ediləcək alt başlıqların sayı. Bu tövsiyə olunan məbləğdir - özünüz üçün ən yaxşı olanı görün!
+    BAN_STICKER = 'CAADAgADOwADPPEcAXkko5EB3YGYAg'  # banhammer marie stikeri
+    ALLOW_EXCL = False  #İcazə verin! əmrləri, eləcə də /
 
 
 class Production(Config):
